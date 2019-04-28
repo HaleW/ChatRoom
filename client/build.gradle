@@ -1,0 +1,15 @@
+apply plugin: 'java-library'
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation group: 'io.netty', name: 'netty-all', version: '5.0.0.Alpha2'
+    implementation 'com.google.protobuf:protobuf-java:3.7.1'
+    compile project(path: ':tools')
+}
+
+sourceCompatibility = "8"
+targetCompatibility = "8"
