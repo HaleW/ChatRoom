@@ -20,40 +20,48 @@ public final class ProtoMsg {
   public enum MsgType
       implements com.google.protobuf.ProtocolMessageEnum {
     /**
-     * <code>HEARTBEAT = 0;</code>
+     * <code>TEMP = 0;</code>
      */
-    HEARTBEAT(0),
+    TEMP(0),
     /**
-     * <code>MSG = 1;</code>
+     * <code>HEARTBEAT = 1;</code>
      */
-    MSG(1),
+    HEARTBEAT(1),
     /**
-     * <code>LOGIN = 2;</code>
+     * <code>MSG = 2;</code>
      */
-    LOGIN(2),
+    MSG(2),
     /**
-     * <code>LOGON = 3;</code>
+     * <code>LOGIN = 3;</code>
      */
-    LOGON(3),
+    LOGIN(3),
+    /**
+     * <code>LOGON = 4;</code>
+     */
+    LOGON(4),
     UNRECOGNIZED(-1),
     ;
 
     /**
-     * <code>HEARTBEAT = 0;</code>
+     * <code>TEMP = 0;</code>
      */
-    public static final int HEARTBEAT_VALUE = 0;
+    public static final int TEMP_VALUE = 0;
     /**
-     * <code>MSG = 1;</code>
+     * <code>HEARTBEAT = 1;</code>
      */
-    public static final int MSG_VALUE = 1;
+    public static final int HEARTBEAT_VALUE = 1;
     /**
-     * <code>LOGIN = 2;</code>
+     * <code>MSG = 2;</code>
      */
-    public static final int LOGIN_VALUE = 2;
+    public static final int MSG_VALUE = 2;
     /**
-     * <code>LOGON = 3;</code>
+     * <code>LOGIN = 3;</code>
      */
-    public static final int LOGON_VALUE = 3;
+    public static final int LOGIN_VALUE = 3;
+    /**
+     * <code>LOGON = 4;</code>
+     */
+    public static final int LOGON_VALUE = 4;
 
 
     public final int getNumber() {
@@ -74,10 +82,11 @@ public final class ProtoMsg {
 
     public static MsgType forNumber(int value) {
       switch (value) {
-        case 0: return HEARTBEAT;
-        case 1: return MSG;
-        case 2: return LOGIN;
-        case 3: return LOGON;
+        case 0: return TEMP;
+        case 1: return HEARTBEAT;
+        case 2: return MSG;
+        case 3: return LOGIN;
+        case 4: return LOGON;
         default: return null;
       }
     }
@@ -123,7 +132,7 @@ public final class ProtoMsg {
 
     private final int value;
 
-    private MsgType(int value) {
+    MsgType(int value) {
       this.value = value;
     }
 
@@ -601,7 +610,7 @@ public final class ProtoMsg {
       static final com.google.protobuf.MapEntry<
           java.lang.String, cn.edu.cuit.proto.ProtoMsg.UserInfo> defaultEntry =
               com.google.protobuf.MapEntry
-              .<java.lang.String, cn.edu.cuit.proto.ProtoMsg.UserInfo>newDefaultInstance(
+              .newDefaultInstance(
                   cn.edu.cuit.proto.ProtoMsg.internal_static_protobuf_Msg_UserInfosEntry_descriptor, 
                   com.google.protobuf.WireFormat.FieldType.STRING,
                   "",
@@ -695,7 +704,7 @@ public final class ProtoMsg {
       if (!getTargetIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, targetId_);
       }
-      if (type_ != cn.edu.cuit.proto.ProtoMsg.MsgType.HEARTBEAT.getNumber()) {
+      if (type_ != cn.edu.cuit.proto.ProtoMsg.MsgType.TEMP.getNumber()) {
         output.writeEnum(4, type_);
       }
       if (!getContentBytes().isEmpty()) {
@@ -731,7 +740,7 @@ public final class ProtoMsg {
       if (!getTargetIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, targetId_);
       }
-      if (type_ != cn.edu.cuit.proto.ProtoMsg.MsgType.HEARTBEAT.getNumber()) {
+      if (type_ != cn.edu.cuit.proto.ProtoMsg.MsgType.TEMP.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(4, type_);
       }
@@ -792,8 +801,7 @@ public final class ProtoMsg {
       }
       if (!internalGetUserInfos().equals(
           other.internalGetUserInfos())) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
+        return unknownFields.equals(other.unknownFields);
     }
 
     @java.lang.Override
@@ -1721,8 +1729,8 @@ public final class ProtoMsg {
       }
       private com.google.protobuf.MapField<java.lang.String, cn.edu.cuit.proto.ProtoMsg.UserInfo>
       internalGetMutableUserInfos() {
-        onChanged();;
-        if (userInfos_ == null) {
+        onChanged();
+          if (userInfos_ == null) {
           userInfos_ = com.google.protobuf.MapField.newMapField(
               UserInfosDefaultEntryHolder.defaultEntry);
         }
@@ -2113,8 +2121,7 @@ public final class ProtoMsg {
           != other.getSize()) return false;
       if (!getData()
           .equals(other.getData())) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
+        return unknownFields.equals(other.unknownFields);
     }
 
     @java.lang.Override
@@ -2938,8 +2945,7 @@ public final class ProtoMsg {
           .equals(other.getEmail())) return false;
       if (!getPhone()
           .equals(other.getPhone())) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
+        return unknownFields.equals(other.unknownFields);
     }
 
     @java.lang.Override
@@ -3623,9 +3629,10 @@ public final class ProtoMsg {
       "\"0\n\004File\022\014\n\004Name\030\001 \001(\t\022\014\n\004Size\030\002 \001(\005\022\014\n\004" +
       "Data\030\003 \001(\014\"T\n\010UserInfo\022\n\n\002Id\030\001 \001(\005\022\014\n\004Na" +
       "me\030\002 \001(\t\022\020\n\010Password\030\003 \001(\t\022\r\n\005Email\030\004 \001(" +
-      "\t\022\r\n\005Phone\030\005 \001(\t*7\n\007MsgType\022\r\n\tHEARTBEAT" +
-      "\020\000\022\007\n\003MSG\020\001\022\t\n\005LOGIN\020\002\022\t\n\005LOGON\020\003B\035\n\021cn." +
-      "edu.cuit.protoB\010ProtoMsgb\006proto3"
+      "\t\022\r\n\005Phone\030\005 \001(\t*A\n\007MsgType\022\010\n\004TEMP\020\000\022\r\n" +
+      "\tHEARTBEAT\020\001\022\007\n\003MSG\020\002\022\t\n\005LOGIN\020\003\022\t\n\005LOGO" +
+      "N\020\004B\035\n\021cn.edu.cuit.protoB\010ProtoMsgb\006prot" +
+      "o3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

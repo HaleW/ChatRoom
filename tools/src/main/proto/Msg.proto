@@ -31,8 +31,9 @@ message UserInfo {
 }
 
 enum MsgType {
-    HEARTBEAT = 0;
-    MSG = 1;
-    LOGIN = 2;
-    LOGON = 3;
+    TEMP = 0;
+    HEARTBEAT = 1;
+    MSG = 2;
+    LOGIN = 3;
+    LOGON = 4;
 }

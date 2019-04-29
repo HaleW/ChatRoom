@@ -7,7 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.edu.cuit.model.UserInfo;
+import cn.edu.cuit.proto.ProtoMsg.UserInfo;
+
 
 public class DBOperation {
     private DBHelper dbHelper;
@@ -24,7 +25,7 @@ public class DBOperation {
         try {
             String sql = "insert into UserInfo(UserName, Email, Phone, Password) values(?, ?, ?, ?);";
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1,userInfo.getUserName());
+            ps.setString(1,userInfo.getName());
             ps.setString(2,userInfo.getEmail());
             ps.setString(3,userInfo.getPhone());
             ps.setString(4,userInfo.getPassword());
@@ -86,13 +87,15 @@ public class DBOperation {
             String sql ="select * from UserInfo;";
             PreparedStatement ps = connection.prepareStatement(sql);
             ResultSet rs=ps.executeQuery();
-            while (rs.next()){
-                UserInfo userInfo = new UserInfo();
-                userInfo.setId(rs.getInt("Id"));
-                userInfo.setUserName(rs.getString("UserName"));
-                userInfo.setEmail(rs.getString("Email"));
-                userInfo.setPhone(rs.getString("Phone"));
-                userInfo.setPassword(rs.getString("Password"));
+            while (rs.next()) {
+                UserInfo.Builder info = UserInfo.newBuilder();
+                UserInfo userInfo = info
+                        .setId(rs.getInt("Id"))
+                        .setName(rs.getString("UserName"))
+                        .setEmail(rs.getString("Email"))
+                        .setPhone(rs.getString("Phone"))
+                        .setPassword(rs.getString("Password"))
+                        .build();
                 userInfos.add(userInfo);
             }
         } catch (SQLException e) {
@@ -104,17 +107,20 @@ public class DBOperation {
     }
 
     private UserInfo selectByItem(String item) {
-        UserInfo userInfo = new UserInfo();
+        UserInfo userInfo = null;
         try {
             String sql = "select * from UserInfo where UserName = '" + item + "';";
             PreparedStatement ps = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                userInfo.setId(rs.getInt("Id"));
-                userInfo.setUserName(rs.getString("UserName"));
-                userInfo.setEmail(rs.getString("Email"));
-                userInfo.setPhone(rs.getString("Phone"));
-                userInfo.setPassword(rs.getString("Password"));
+                UserInfo.Builder info = UserInfo.newBuilder();
+                userInfo = info
+                        .setId(rs.getInt("Id"))
+                        .setName(rs.getString("UserName"))
+                        .setEmail(rs.getString("Email"))
+                        .setPhone(rs.getString("Phone"))
+                        .setPassword(rs.getString("Password"))
+                        .build();
             }
         } catch (SQLException e) {
             e.printStackTrace();

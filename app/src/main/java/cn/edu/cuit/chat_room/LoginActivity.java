@@ -1,6 +1,7 @@
 package cn.edu.cuit.chat_room;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -12,10 +13,12 @@ import android.widget.Toast;
 
 import cn.edu.cuit.client.ClientRun;
 import cn.edu.cuit.operation.Login;
-import cn.edu.cuit.proto.ProtoMsg;
+import cn.edu.cuit.proto.ProtoMsg.Msg;
 import cn.edu.cuit.util.SPType;
 import cn.edu.cuit.util.SharedPreferenceUtil;
 import cn.edu.cuit.util.SharedPreferenceUtil.ContentValue;
+
+import static java.lang.System.currentTimeMillis;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private EditText userName;
@@ -24,8 +27,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private CheckBox autoLoginCheck;
     private Button loginButton;
     private Button logonButton;
-
-    ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +40,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginButton = findViewById(R.id.LoginButton);
         logonButton = findViewById(R.id.LogonButton);
 
+        autoLoginCheck.setOnCheckedChangeListener(this);
+        passwordCheck.setOnCheckedChangeListener(this);
+        loginButton.setOnClickListener(this);
+        logonButton.setOnClickListener(this);
+
         ConnectionThread ct = new ConnectionThread();
         ct.start();
         init();
-        pd = new ProgressDialog(LoginActivity.this);
-
-        loginButton.setOnClickListener(this);
-        logonButton.setOnClickListener(this);
     }
 
     @Override
@@ -55,7 +57,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 login();
                 break;
             case R.id.LogonButton:
-
+                startActivity(new Intent(LoginActivity.this,LogonActivity.class));
                 break;
         }
     }
@@ -71,28 +73,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 passwordCheck.setChecked(true);
             }
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if(pd!=null){
-            if (pd.isShowing()){
-                pd.cancel();
-            }else {
-                finish();
-            }
-        }else {
-            finish();
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (pd != null) {
-            pd.cancel();
-            pd = null;
-        }
-        super.onDestroy();
     }
 
     private class ConnectionThread extends Thread{
@@ -123,6 +103,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (isAutoLogin()){
             //选中自动登录框
             autoLoginCheck.setChecked(true);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             //登录
             login();
         }
@@ -174,33 +160,70 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
+        ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+        progressDialog.setMessage("正在登录...");
+        progressDialog.show();
+
         Login.sendUserInfo(getUserName(), getPassword());
-        showLoading("登录中...");
 
         Thread loginThread = new Thread() {
             @Override
             public void run() {
-                super.run();
                 setLoginButtonClickable(false);
 
-                if (isAllowLogin(getUserName(), getPassword())) {
-                    hideLoading();
+                loginType type = isAllowLogin(getUserName(),getPassword());
+
+                if (type==loginType.SUCCESS) {
                     showToast("登陆成功!");
+                    startActivity(new Intent(LoginActivity.this,MainActivity.class));
                     saveLoginValueToLocal();
-                } else {
-                    hideLoading();
+                    progressDialog.dismiss();
+                    finish();
+                } else if (type==loginType.INCORRECT){
                     showToast("账号或密码不正确!");
+                }else if(type==loginType.FAILURE){
+                    showToast("登陆失败！");
+                }else if(type==loginType.NON_EXIT){
+                    showToast("账号不存在！");
                 }
                 setLoginButtonClickable(true);
+                progressDialog.dismiss();
             }
         };
         loginThread.start();
     }
 
     //是否允许登录
-    private boolean isAllowLogin(String userName,String password){
-        ProtoMsg.UserInfo userInfo = Login.receiveUserInfo;
-        return userInfo != null && (userName.equals(userInfo.getName()) && userInfo.getPassword().equals(password));
+    private loginType isAllowLogin(String userName,String password) {
+        Msg msg;
+
+        long startTime = currentTimeMillis();
+        long tempTime = currentTimeMillis() - startTime;
+        while (true) {
+            msg = Login.getReceiveLoginMsg();
+
+            if (tempTime>5000){
+                if (msg==null){
+                    return loginType.FAILURE;
+                }else if(msg.getUserInfo().getId()==-1){
+                    return loginType.NON_EXIT;
+                }
+            }else if(msg!=null) {
+                if (!userName.equals(msg.getUserInfo().getName()) || !password.equals(msg.getUserInfo().getPassword())) {
+                    return loginType.INCORRECT;
+                } else {
+                    return loginType.SUCCESS;
+                }
+            }
+            tempTime = currentTimeMillis() - startTime;
+        }
+    }
+
+    private enum loginType{
+        SUCCESS,
+        FAILURE,
+        INCORRECT,
+        NON_EXIT
     }
 
     //设置登录按钮是否可用
@@ -211,18 +234,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //显示toast
     private void showToast(String msg){
         runOnUiThread(() -> Toast.makeText(LoginActivity.this,msg,Toast.LENGTH_SHORT).show());
-    }
-
-    //显示登录状态
-    private void showLoading(String msg){
-        pd.setMessage(msg);
-        pd.setCancelable(false);
-        pd.show();
-    }
-
-    //隐藏登陆状态
-    private void hideLoading(){
-        pd.dismiss();
     }
 
     //获取输入框用户名

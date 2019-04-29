@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".LoginActivity">
+    tools:context=".LogonActivity">
 
     <TextView
-        android:text="登录"
+        android:text="注册"
         android:gravity="center"
         android:textSize="25sp"
         android:layout_marginTop="100dp"
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content" />
 
     <EditText
-        android:id="@+id/UserNameEditText"
+        android:id="@+id/NameEditText"
         android:layout_marginTop="20dp"
         android:height="40dp"
         android:width="300dp"
@@ -25,7 +25,28 @@
         android:layout_height="wrap_content" />
 
     <EditText
-        android:id="@+id/PasswordEditText"
+        android:id="@+id/EmailEditText"
+        android:layout_marginTop="20dp"
+        android:height="40dp"
+        android:width="300dp"
+        android:hint="邮箱"
+        android:inputType="textPassword"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/PhoneEditText"
+        android:layout_marginTop="20dp"
+        android:height="40dp"
+        android:width="300dp"
+        android:hint="电话号码"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/PasswordEditText1"
         android:layout_marginTop="20dp"
         android:height="40dp"
         android:width="300dp"
@@ -35,18 +56,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <CheckBox
-        android:id="@+id/PasswordCheckBox"
-        android:text="记住密码"
+    <EditText
+        android:id="@+id/PasswordEditText2"
+        android:layout_marginTop="20dp"
+        android:height="40dp"
         android:width="300dp"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <CheckBox
-        android:id="@+id/LoginCheckBox"
-        android:text="下次自动登录"
-        android:width="300dp"
+        android:hint="确认密码"
+        android:inputType="textPassword"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -55,17 +71,16 @@
         android:layout_width="300dp"
         android:layout_marginTop="20dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        >
+        android:layout_gravity="center" >
         <Button
-            android:id="@+id/LoginButton"
-            android:text="登录"
+            android:id="@+id/Login"
+            android:text="去登录"
             android:layout_gravity="right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <Button
-            android:id="@+id/LogonButton"
+            android:id="@+id/Logon"
             android:text="注册"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

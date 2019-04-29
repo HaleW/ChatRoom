@@ -4,18 +4,17 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import cn.edu.cuit.config.GetConfig;
+import static cn.edu.cuit.tools.Tools.MysqlDriver;
+import static cn.edu.cuit.tools.Tools.MysqlPassword;
+import static cn.edu.cuit.tools.Tools.MysqlUrl;
+import static cn.edu.cuit.tools.Tools.MysqlUser;
 
-public class DBHelper {
-    public Connection getConnection() {
-        final String dbUrl = GetConfig.getMysqlUrl();
-        final String dbDriver = GetConfig.getMysqlDriver();
-        final String dbUser = GetConfig.getMysqlUser();
-        final String dbPassword = GetConfig.getMysqlPassword();
+class DBHelper {
+    Connection getConnection() {
         Connection connection = null;
         try {
-            Class.forName(dbDriver);
-            connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+            Class.forName(MysqlDriver);
+            connection = DriverManager.getConnection(MysqlUrl, MysqlUser, MysqlPassword);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -25,7 +24,7 @@ public class DBHelper {
         return connection;
     }
 
-    public void closeConnection(){
+    void closeConnection(){
         try {
             getConnection().close();
         } catch (SQLException e) {
