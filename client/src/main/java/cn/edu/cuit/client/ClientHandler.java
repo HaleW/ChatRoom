@@ -2,6 +2,7 @@ package cn.edu.cuit.client;
 
 import java.util.concurrent.TimeUnit;
 
+import cn.edu.cuit.operation.ChatMsg;
 import cn.edu.cuit.operation.Login;
 import cn.edu.cuit.operation.Logon;
 import cn.edu.cuit.proto.ProtoMsg.Msg;
@@ -52,6 +53,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Msg> {
     protected void messageReceived(ChannelHandlerContext channelHandlerContext, Msg msg) {
         switch (msg.getType()) {
             case MSG:
+                ChatMsg.setReceiveMsg(msg);
                 break;
             case HEARTBEAT:
                 break;
