@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.edu.cuit.proto.ProtoMsg.UserInfo;
 
@@ -140,6 +142,26 @@ public class DBOperation {
 
     public UserInfo selectByEmail(String email){
         return selectByItem(email);
+    }
+
+    public Map<Integer,String> selectFriends(String name){
+        Map<Integer,String> map = new HashMap<>();
+        try {
+            String sql = "select * from Friends where Name = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1,name);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()){
+                map.put(rs.getInt("Id"),rs.getString("FriendName"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return map;
     }
 
     public int updateForPassword(String userName, String password){

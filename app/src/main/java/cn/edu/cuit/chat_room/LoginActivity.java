@@ -52,39 +52,48 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.LoginButton:
                 login();
                 break;
             case R.id.LogonButton:
-                startActivity(new Intent(LoginActivity.this,LogonActivity.class));
+                startActivity(new Intent(LoginActivity.this, LogonActivity.class));
                 break;
         }
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if(buttonView==passwordCheck){
-            if (!isChecked){
+        SharedPreferenceUtil spu = new SharedPreferenceUtil(this);
+        if (buttonView == passwordCheck) {
+            if (!isChecked) {
                 autoLoginCheck.setChecked(false);
+                spu.put(new ContentValue(SPType.isRememberPassword, false),
+                        new ContentValue(SPType.isAutoLogin, false));
+            }else {
+                spu.put(new ContentValue(SPType.isRememberPassword, true));
             }
-        }else if(buttonView==autoLoginCheck){
-            if(isChecked){
+        } else if (buttonView == autoLoginCheck) {
+            if (isChecked) {
                 passwordCheck.setChecked(true);
+                spu.put(new ContentValue(SPType.isRememberPassword, true),
+                        new ContentValue(SPType.isAutoLogin, true));
+            }else {
+                spu.put(new ContentValue(SPType.isAutoLogin, false));
             }
         }
     }
 
-    private class ConnectionThread extends Thread{
+    private class ConnectionThread extends Thread {
         @Override
         public void run() {
             ClientRun.Run();
         }
     }
 
-    private void init(){
+    private void init() {
         //判断用户是否是第一次登陆
-        if (isFirstLogin()){
+        if (isFirstLogin()) {
             //取消选中记住密码框
             passwordCheck.setChecked(false);
             //取消选中记住自动登录框
@@ -92,7 +101,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         //判断是否记住密码
-        if (isRememberPassword()){
+        if (isRememberPassword()) {
             //勾选记住密码框
             passwordCheck.setChecked(true);
             //填入记住的密码账号
@@ -100,7 +109,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         //判断是否自动登录
-        if (isAutoLogin()){
+        if (isAutoLogin()) {
             //选中自动登录框
             autoLoginCheck.setChecked(true);
             try {
@@ -131,21 +140,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     //是否记住密码
-    private boolean isRememberPassword(){
+    private boolean isRememberPassword() {
         SharedPreferenceUtil spu = new SharedPreferenceUtil(this);
-        return spu.getBoolean(SPType.isRememberPassword,false);
+        return spu.getBoolean(SPType.isRememberPassword, false);
     }
 
     //将保存的在本地的密码用户名填入登录框
-    private void setUserNameAndPassword(){
+    private void setUserNameAndPassword() {
         userName.setText(getLocalUserName());
         password.setText(getLocalPassword());
     }
 
     //是否自动登录
-    private boolean isAutoLogin(){
+    private boolean isAutoLogin() {
         SharedPreferenceUtil spu = new SharedPreferenceUtil(this);
-        return spu.getBoolean(SPType.isAutoLogin,false);
+        return spu.getBoolean(SPType.isAutoLogin, false);
     }
 
     //登录
@@ -171,19 +180,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void run() {
                 setLoginButtonClickable(false);
 
-                loginType type = isAllowLogin(getUserName(),getPassword());
+                loginType type = isAllowLogin(getUserName(), getPassword());
 
-                if (type==loginType.SUCCESS) {
+                if (type == loginType.SUCCESS) {
                     showToast("登陆成功!");
-                    startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     saveLoginValueToLocal();
                     progressDialog.dismiss();
                     finish();
-                } else if (type==loginType.INCORRECT){
+                } else if (type == loginType.INCORRECT) {
                     showToast("账号或密码不正确!");
-                }else if(type==loginType.FAILURE){
+                } else if (type == loginType.FAILURE) {
                     showToast("登陆失败！");
-                }else if(type==loginType.NON_EXIT){
+                } else if (type == loginType.NON_EXIT) {
                     showToast("账号不存在！");
                 }
                 setLoginButtonClickable(true);
@@ -194,7 +203,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     //是否允许登录
-    private loginType isAllowLogin(String userName,String password) {
+    private loginType isAllowLogin(String userName, String password) {
         Msg msg;
 
         long startTime = currentTimeMillis();
@@ -202,13 +211,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         while (true) {
             msg = Login.getReceiveLoginMsg();
 
-            if (tempTime>5000){
-                if (msg==null){
+            if (tempTime > 5000) {
+                if (msg == null) {
                     return loginType.FAILURE;
-                }else if(msg.getUserInfo().getId()==-1){
+                } else if (msg.getUserInfo().getId() == -1) {
                     return loginType.NON_EXIT;
                 }
-            }else if(msg!=null) {
+            } else if (msg != null) {
                 if (!userName.equals(msg.getUserInfo().getName()) || !password.equals(msg.getUserInfo().getPassword())) {
                     return loginType.INCORRECT;
                 } else {
@@ -219,7 +228,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private enum loginType{
+    private enum loginType {
         SUCCESS,
         FAILURE,
         INCORRECT,
@@ -227,50 +236,50 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     //设置登录按钮是否可用
-    private void setLoginButtonClickable(boolean flag){
+    private void setLoginButtonClickable(boolean flag) {
         loginButton.setClickable(flag);
     }
 
     //显示toast
-    private void showToast(String msg){
-        runOnUiThread(() -> Toast.makeText(LoginActivity.this,msg,Toast.LENGTH_SHORT).show());
+    private void showToast(String msg) {
+        runOnUiThread(() -> Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show());
     }
 
     //获取输入框用户名
-    private String getUserName(){
+    private String getUserName() {
         return userName.getText().toString().trim();
     }
 
     //获取输入框密码
-    private String getPassword(){
+    private String getPassword() {
         return password.getText().toString().trim();
     }
 
     //获取本地保存用户名
-    private String getLocalUserName(){
+    private String getLocalUserName() {
         SharedPreferenceUtil spu = new SharedPreferenceUtil(this);
-        return spu.getString(SPType.userName,"");
+        return spu.getString(SPType.userName, "");
     }
 
     //获取本地保存密码
-    private String getLocalPassword(){
+    private String getLocalPassword() {
         SharedPreferenceUtil spu = new SharedPreferenceUtil(this);
-        return spu.getString(SPType.password,"");
+        return spu.getString(SPType.password, "");
     }
 
-    private void saveLoginValueToLocal(){
-        SharedPreferenceUtil spu =new SharedPreferenceUtil(this);
-        if(autoLoginCheck.isChecked()) {
+    private void saveLoginValueToLocal() {
+        SharedPreferenceUtil spu = new SharedPreferenceUtil(this);
+        if (autoLoginCheck.isChecked()) {
             spu.put(new ContentValue(SPType.userName, getUserName()),
                     new ContentValue(SPType.password, getPassword()),
                     new ContentValue(SPType.isAutoLogin, true),
                     new ContentValue(SPType.isRememberPassword, true));
-        }else if(passwordCheck.isChecked()){
+        } else if (passwordCheck.isChecked()) {
             spu.put(new ContentValue(SPType.userName, getUserName()),
                     new ContentValue(SPType.password, getPassword()),
                     new ContentValue(SPType.isAutoLogin, false),
                     new ContentValue(SPType.isRememberPassword, true));
-        }else if(!passwordCheck.isChecked()){
+        } else if (!passwordCheck.isChecked()) {
             spu.put(new ContentValue(SPType.userName, getUserName()),
                     new ContentValue(SPType.password, ""),
                     new ContentValue(SPType.isAutoLogin, false),

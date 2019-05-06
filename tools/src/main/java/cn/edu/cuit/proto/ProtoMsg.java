@@ -39,6 +39,10 @@ public final class ProtoMsg {
      * <code>LOGON = 4;</code>
      */
     LOGON(4),
+    /**
+     * <code>USERS = 5;</code>
+     */
+    USERS(5),
     UNRECOGNIZED(-1),
     ;
 
@@ -62,6 +66,10 @@ public final class ProtoMsg {
      * <code>LOGON = 4;</code>
      */
     public static final int LOGON_VALUE = 4;
+    /**
+     * <code>USERS = 5;</code>
+     */
+    public static final int USERS_VALUE = 5;
 
 
     public final int getNumber() {
@@ -87,6 +95,7 @@ public final class ProtoMsg {
         case 2: return MSG;
         case 3: return LOGIN;
         case 4: return LOGON;
+        case 5: return USERS;
         default: return null;
       }
     }
@@ -164,14 +173,14 @@ public final class ProtoMsg {
         getSendTimeBytes();
 
     /**
-     * <code>string targetId = 3;</code>
+     * <code>string targetName = 3;</code>
      */
-    java.lang.String getTargetId();
+    java.lang.String getTargetName();
     /**
-     * <code>string targetId = 3;</code>
+     * <code>string targetName = 3;</code>
      */
     com.google.protobuf.ByteString
-        getTargetIdBytes();
+        getTargetNameBytes();
 
     /**
      * <code>.protobuf.MsgType type = 4;</code>
@@ -251,6 +260,40 @@ public final class ProtoMsg {
 
     cn.edu.cuit.proto.ProtoMsg.UserInfo getUserInfosOrThrow(
         java.lang.String key);
+
+    /**
+     * <code>map&lt;int32, string&gt; friends = 9;</code>
+     */
+    int getFriendsCount();
+    /**
+     * <code>map&lt;int32, string&gt; friends = 9;</code>
+     */
+    boolean containsFriends(
+        int key);
+    /**
+     * Use {@link #getFriendsMap()} instead.
+     */
+    @java.lang.Deprecated
+    java.util.Map<java.lang.Integer, java.lang.String>
+    getFriends();
+    /**
+     * <code>map&lt;int32, string&gt; friends = 9;</code>
+     */
+    java.util.Map<java.lang.Integer, java.lang.String>
+    getFriendsMap();
+    /**
+     * <code>map&lt;int32, string&gt; friends = 9;</code>
+     */
+
+    java.lang.String getFriendsOrDefault(
+        int key,
+        java.lang.String defaultValue);
+    /**
+     * <code>map&lt;int32, string&gt; friends = 9;</code>
+     */
+
+    java.lang.String getFriendsOrThrow(
+        int key);
   }
   /**
    * Protobuf type {@code protobuf.Msg}
@@ -267,7 +310,7 @@ public final class ProtoMsg {
     private Msg() {
       targetIP_ = "";
       sendTime_ = "";
-      targetId_ = "";
+      targetName_ = "";
       type_ = 0;
       content_ = "";
     }
@@ -311,7 +354,7 @@ public final class ProtoMsg {
             case 26: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              targetId_ = s;
+              targetName_ = s;
               break;
             }
             case 32: {
@@ -365,6 +408,19 @@ public final class ProtoMsg {
                   userInfos__.getKey(), userInfos__.getValue());
               break;
             }
+            case 74: {
+              if (!((mutable_bitField0_ & 0x00000100) != 0)) {
+                friends_ = com.google.protobuf.MapField.newMapField(
+                    FriendsDefaultEntryHolder.defaultEntry);
+                mutable_bitField0_ |= 0x00000100;
+              }
+              com.google.protobuf.MapEntry<java.lang.Integer, java.lang.String>
+              friends__ = input.readMessage(
+                  FriendsDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+              friends_.getMutableMap().put(
+                  friends__.getKey(), friends__.getValue());
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -396,6 +452,8 @@ public final class ProtoMsg {
       switch (number) {
         case 8:
           return internalGetUserInfos();
+        case 9:
+          return internalGetFriends();
         default:
           throw new RuntimeException(
               "Invalid map field number: " + number);
@@ -478,34 +536,34 @@ public final class ProtoMsg {
       }
     }
 
-    public static final int TARGETID_FIELD_NUMBER = 3;
-    private volatile java.lang.Object targetId_;
+    public static final int TARGETNAME_FIELD_NUMBER = 3;
+    private volatile java.lang.Object targetName_;
     /**
-     * <code>string targetId = 3;</code>
+     * <code>string targetName = 3;</code>
      */
-    public java.lang.String getTargetId() {
-      java.lang.Object ref = targetId_;
+    public java.lang.String getTargetName() {
+      java.lang.Object ref = targetName_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        targetId_ = s;
+        targetName_ = s;
         return s;
       }
     }
     /**
-     * <code>string targetId = 3;</code>
+     * <code>string targetName = 3;</code>
      */
     public com.google.protobuf.ByteString
-        getTargetIdBytes() {
-      java.lang.Object ref = targetId_;
+        getTargetNameBytes() {
+      java.lang.Object ref = targetName_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        targetId_ = b;
+        targetName_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -681,6 +739,82 @@ public final class ProtoMsg {
       return map.get(key);
     }
 
+    public static final int FRIENDS_FIELD_NUMBER = 9;
+    private static final class FriendsDefaultEntryHolder {
+      static final com.google.protobuf.MapEntry<
+          java.lang.Integer, java.lang.String> defaultEntry =
+              com.google.protobuf.MapEntry
+              .newDefaultInstance(
+                  cn.edu.cuit.proto.ProtoMsg.internal_static_protobuf_Msg_FriendsEntry_descriptor, 
+                  com.google.protobuf.WireFormat.FieldType.INT32,
+                  0,
+                  com.google.protobuf.WireFormat.FieldType.STRING,
+                  "");
+    }
+    private com.google.protobuf.MapField<
+        java.lang.Integer, java.lang.String> friends_;
+    private com.google.protobuf.MapField<java.lang.Integer, java.lang.String>
+    internalGetFriends() {
+      if (friends_ == null) {
+        return com.google.protobuf.MapField.emptyMapField(
+            FriendsDefaultEntryHolder.defaultEntry);
+      }
+      return friends_;
+    }
+
+    public int getFriendsCount() {
+      return internalGetFriends().getMap().size();
+    }
+    /**
+     * <code>map&lt;int32, string&gt; friends = 9;</code>
+     */
+
+    public boolean containsFriends(
+        int key) {
+      
+      return internalGetFriends().getMap().containsKey(key);
+    }
+    /**
+     * Use {@link #getFriendsMap()} instead.
+     */
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.Integer, java.lang.String> getFriends() {
+      return getFriendsMap();
+    }
+    /**
+     * <code>map&lt;int32, string&gt; friends = 9;</code>
+     */
+
+    public java.util.Map<java.lang.Integer, java.lang.String> getFriendsMap() {
+      return internalGetFriends().getMap();
+    }
+    /**
+     * <code>map&lt;int32, string&gt; friends = 9;</code>
+     */
+
+    public java.lang.String getFriendsOrDefault(
+        int key,
+        java.lang.String defaultValue) {
+      
+      java.util.Map<java.lang.Integer, java.lang.String> map =
+          internalGetFriends().getMap();
+      return map.containsKey(key) ? map.get(key) : defaultValue;
+    }
+    /**
+     * <code>map&lt;int32, string&gt; friends = 9;</code>
+     */
+
+    public java.lang.String getFriendsOrThrow(
+        int key) {
+      
+      java.util.Map<java.lang.Integer, java.lang.String> map =
+          internalGetFriends().getMap();
+      if (!map.containsKey(key)) {
+        throw new java.lang.IllegalArgumentException();
+      }
+      return map.get(key);
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -701,8 +835,8 @@ public final class ProtoMsg {
       if (!getSendTimeBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, sendTime_);
       }
-      if (!getTargetIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, targetId_);
+      if (!getTargetNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, targetName_);
       }
       if (type_ != cn.edu.cuit.proto.ProtoMsg.MsgType.TEMP.getNumber()) {
         output.writeEnum(4, type_);
@@ -722,6 +856,12 @@ public final class ProtoMsg {
           internalGetUserInfos(),
           UserInfosDefaultEntryHolder.defaultEntry,
           8);
+      com.google.protobuf.GeneratedMessageV3
+        .serializeIntegerMapTo(
+          output,
+          internalGetFriends(),
+          FriendsDefaultEntryHolder.defaultEntry,
+          9);
       unknownFields.writeTo(output);
     }
 
@@ -737,8 +877,8 @@ public final class ProtoMsg {
       if (!getSendTimeBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, sendTime_);
       }
-      if (!getTargetIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, targetId_);
+      if (!getTargetNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, targetName_);
       }
       if (type_ != cn.edu.cuit.proto.ProtoMsg.MsgType.TEMP.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
@@ -765,6 +905,16 @@ public final class ProtoMsg {
         size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(8, userInfos__);
       }
+      for (java.util.Map.Entry<java.lang.Integer, java.lang.String> entry
+           : internalGetFriends().getMap().entrySet()) {
+        com.google.protobuf.MapEntry<java.lang.Integer, java.lang.String>
+        friends__ = FriendsDefaultEntryHolder.defaultEntry.newBuilderForType()
+            .setKey(entry.getKey())
+            .setValue(entry.getValue())
+            .build();
+        size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(9, friends__);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -784,8 +934,8 @@ public final class ProtoMsg {
           .equals(other.getTargetIP())) return false;
       if (!getSendTime()
           .equals(other.getSendTime())) return false;
-      if (!getTargetId()
-          .equals(other.getTargetId())) return false;
+      if (!getTargetName()
+          .equals(other.getTargetName())) return false;
       if (type_ != other.type_) return false;
       if (!getContent()
           .equals(other.getContent())) return false;
@@ -801,6 +951,8 @@ public final class ProtoMsg {
       }
       if (!internalGetUserInfos().equals(
           other.internalGetUserInfos())) return false;
+      if (!internalGetFriends().equals(
+          other.internalGetFriends())) return false;
         return unknownFields.equals(other.unknownFields);
     }
 
@@ -815,8 +967,8 @@ public final class ProtoMsg {
       hash = (53 * hash) + getTargetIP().hashCode();
       hash = (37 * hash) + SENDTIME_FIELD_NUMBER;
       hash = (53 * hash) + getSendTime().hashCode();
-      hash = (37 * hash) + TARGETID_FIELD_NUMBER;
-      hash = (53 * hash) + getTargetId().hashCode();
+      hash = (37 * hash) + TARGETNAME_FIELD_NUMBER;
+      hash = (53 * hash) + getTargetName().hashCode();
       hash = (37 * hash) + TYPE_FIELD_NUMBER;
       hash = (53 * hash) + type_;
       hash = (37 * hash) + CONTENT_FIELD_NUMBER;
@@ -832,6 +984,10 @@ public final class ProtoMsg {
       if (!internalGetUserInfos().getMap().isEmpty()) {
         hash = (37 * hash) + USERINFOS_FIELD_NUMBER;
         hash = (53 * hash) + internalGetUserInfos().hashCode();
+      }
+      if (!internalGetFriends().getMap().isEmpty()) {
+        hash = (37 * hash) + FRIENDS_FIELD_NUMBER;
+        hash = (53 * hash) + internalGetFriends().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -946,6 +1102,8 @@ public final class ProtoMsg {
         switch (number) {
           case 8:
             return internalGetUserInfos();
+          case 9:
+            return internalGetFriends();
           default:
             throw new RuntimeException(
                 "Invalid map field number: " + number);
@@ -957,6 +1115,8 @@ public final class ProtoMsg {
         switch (number) {
           case 8:
             return internalGetMutableUserInfos();
+          case 9:
+            return internalGetMutableFriends();
           default:
             throw new RuntimeException(
                 "Invalid map field number: " + number);
@@ -992,7 +1152,7 @@ public final class ProtoMsg {
 
         sendTime_ = "";
 
-        targetId_ = "";
+        targetName_ = "";
 
         type_ = 0;
 
@@ -1011,6 +1171,7 @@ public final class ProtoMsg {
           userInfoBuilder_ = null;
         }
         internalGetMutableUserInfos().clear();
+        internalGetMutableFriends().clear();
         return this;
       }
 
@@ -1041,7 +1202,7 @@ public final class ProtoMsg {
         int to_bitField0_ = 0;
         result.targetIP_ = targetIP_;
         result.sendTime_ = sendTime_;
-        result.targetId_ = targetId_;
+        result.targetName_ = targetName_;
         result.type_ = type_;
         result.content_ = content_;
         if (fileBuilder_ == null) {
@@ -1056,6 +1217,8 @@ public final class ProtoMsg {
         }
         result.userInfos_ = internalGetUserInfos();
         result.userInfos_.makeImmutable();
+        result.friends_ = internalGetFriends();
+        result.friends_.makeImmutable();
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1113,8 +1276,8 @@ public final class ProtoMsg {
           sendTime_ = other.sendTime_;
           onChanged();
         }
-        if (!other.getTargetId().isEmpty()) {
-          targetId_ = other.targetId_;
+        if (!other.getTargetName().isEmpty()) {
+          targetName_ = other.targetName_;
           onChanged();
         }
         if (other.type_ != 0) {
@@ -1132,6 +1295,8 @@ public final class ProtoMsg {
         }
         internalGetMutableUserInfos().mergeFrom(
             other.internalGetUserInfos());
+        internalGetMutableFriends().mergeFrom(
+            other.internalGetFriends());
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -1300,71 +1465,71 @@ public final class ProtoMsg {
         return this;
       }
 
-      private java.lang.Object targetId_ = "";
+      private java.lang.Object targetName_ = "";
       /**
-       * <code>string targetId = 3;</code>
+       * <code>string targetName = 3;</code>
        */
-      public java.lang.String getTargetId() {
-        java.lang.Object ref = targetId_;
+      public java.lang.String getTargetName() {
+        java.lang.Object ref = targetName_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          targetId_ = s;
+          targetName_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
         }
       }
       /**
-       * <code>string targetId = 3;</code>
+       * <code>string targetName = 3;</code>
        */
       public com.google.protobuf.ByteString
-          getTargetIdBytes() {
-        java.lang.Object ref = targetId_;
+          getTargetNameBytes() {
+        java.lang.Object ref = targetName_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          targetId_ = b;
+          targetName_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>string targetId = 3;</code>
+       * <code>string targetName = 3;</code>
        */
-      public Builder setTargetId(
+      public Builder setTargetName(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        targetId_ = value;
+        targetName_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>string targetId = 3;</code>
+       * <code>string targetName = 3;</code>
        */
-      public Builder clearTargetId() {
+      public Builder clearTargetName() {
         
-        targetId_ = getDefaultInstance().getTargetId();
+        targetName_ = getDefaultInstance().getTargetName();
         onChanged();
         return this;
       }
       /**
-       * <code>string targetId = 3;</code>
+       * <code>string targetName = 3;</code>
        */
-      public Builder setTargetIdBytes(
+      public Builder setTargetNameBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        targetId_ = value;
+        targetName_ = value;
         onChanged();
         return this;
       }
@@ -1836,6 +2001,129 @@ public final class ProtoMsg {
       public Builder putAllUserInfos(
           java.util.Map<java.lang.String, cn.edu.cuit.proto.ProtoMsg.UserInfo> values) {
         internalGetMutableUserInfos().getMutableMap()
+            .putAll(values);
+        return this;
+      }
+
+      private com.google.protobuf.MapField<
+          java.lang.Integer, java.lang.String> friends_;
+      private com.google.protobuf.MapField<java.lang.Integer, java.lang.String>
+      internalGetFriends() {
+        if (friends_ == null) {
+          return com.google.protobuf.MapField.emptyMapField(
+              FriendsDefaultEntryHolder.defaultEntry);
+        }
+        return friends_;
+      }
+      private com.google.protobuf.MapField<java.lang.Integer, java.lang.String>
+      internalGetMutableFriends() {
+        onChanged();
+          if (friends_ == null) {
+          friends_ = com.google.protobuf.MapField.newMapField(
+              FriendsDefaultEntryHolder.defaultEntry);
+        }
+        if (!friends_.isMutable()) {
+          friends_ = friends_.copy();
+        }
+        return friends_;
+      }
+
+      public int getFriendsCount() {
+        return internalGetFriends().getMap().size();
+      }
+      /**
+       * <code>map&lt;int32, string&gt; friends = 9;</code>
+       */
+
+      public boolean containsFriends(
+          int key) {
+        
+        return internalGetFriends().getMap().containsKey(key);
+      }
+      /**
+       * Use {@link #getFriendsMap()} instead.
+       */
+      @java.lang.Deprecated
+      public java.util.Map<java.lang.Integer, java.lang.String> getFriends() {
+        return getFriendsMap();
+      }
+      /**
+       * <code>map&lt;int32, string&gt; friends = 9;</code>
+       */
+
+      public java.util.Map<java.lang.Integer, java.lang.String> getFriendsMap() {
+        return internalGetFriends().getMap();
+      }
+      /**
+       * <code>map&lt;int32, string&gt; friends = 9;</code>
+       */
+
+      public java.lang.String getFriendsOrDefault(
+          int key,
+          java.lang.String defaultValue) {
+        
+        java.util.Map<java.lang.Integer, java.lang.String> map =
+            internalGetFriends().getMap();
+        return map.containsKey(key) ? map.get(key) : defaultValue;
+      }
+      /**
+       * <code>map&lt;int32, string&gt; friends = 9;</code>
+       */
+
+      public java.lang.String getFriendsOrThrow(
+          int key) {
+        
+        java.util.Map<java.lang.Integer, java.lang.String> map =
+            internalGetFriends().getMap();
+        if (!map.containsKey(key)) {
+          throw new java.lang.IllegalArgumentException();
+        }
+        return map.get(key);
+      }
+
+      public Builder clearFriends() {
+        internalGetMutableFriends().getMutableMap()
+            .clear();
+        return this;
+      }
+      /**
+       * <code>map&lt;int32, string&gt; friends = 9;</code>
+       */
+
+      public Builder removeFriends(
+          int key) {
+        
+        internalGetMutableFriends().getMutableMap()
+            .remove(key);
+        return this;
+      }
+      /**
+       * Use alternate mutation accessors instead.
+       */
+      @java.lang.Deprecated
+      public java.util.Map<java.lang.Integer, java.lang.String>
+      getMutableFriends() {
+        return internalGetMutableFriends().getMutableMap();
+      }
+      /**
+       * <code>map&lt;int32, string&gt; friends = 9;</code>
+       */
+      public Builder putFriends(
+          int key,
+          java.lang.String value) {
+        
+        if (value == null) { throw new java.lang.NullPointerException(); }
+        internalGetMutableFriends().getMutableMap()
+            .put(key, value);
+        return this;
+      }
+      /**
+       * <code>map&lt;int32, string&gt; friends = 9;</code>
+       */
+
+      public Builder putAllFriends(
+          java.util.Map<java.lang.Integer, java.lang.String> values) {
+        internalGetMutableFriends().getMutableMap()
             .putAll(values);
         return this;
       }
@@ -3600,6 +3888,11 @@ public final class ProtoMsg {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_protobuf_Msg_UserInfosEntry_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_protobuf_Msg_FriendsEntry_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_protobuf_Msg_FriendsEntry_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_protobuf_File_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -3618,21 +3911,23 @@ public final class ProtoMsg {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\tMsg.proto\022\010protobuf\"\250\002\n\003Msg\022\020\n\010targetI" +
-      "P\030\001 \001(\t\022\020\n\010sendTime\030\002 \001(\t\022\020\n\010targetId\030\003 " +
-      "\001(\t\022\037\n\004type\030\004 \001(\0162\021.protobuf.MsgType\022\017\n\007" +
-      "content\030\005 \001(\t\022\034\n\004file\030\006 \001(\0132\016.protobuf.F" +
-      "ile\022$\n\010userInfo\030\007 \001(\0132\022.protobuf.UserInf" +
-      "o\022/\n\tuserInfos\030\010 \003(\0132\034.protobuf.Msg.User" +
-      "InfosEntry\032D\n\016UserInfosEntry\022\013\n\003key\030\001 \001(" +
-      "\t\022!\n\005value\030\002 \001(\0132\022.protobuf.UserInfo:\0028\001" +
-      "\"0\n\004File\022\014\n\004Name\030\001 \001(\t\022\014\n\004Size\030\002 \001(\005\022\014\n\004" +
-      "Data\030\003 \001(\014\"T\n\010UserInfo\022\n\n\002Id\030\001 \001(\005\022\014\n\004Na" +
-      "me\030\002 \001(\t\022\020\n\010Password\030\003 \001(\t\022\r\n\005Email\030\004 \001(" +
-      "\t\022\r\n\005Phone\030\005 \001(\t*A\n\007MsgType\022\010\n\004TEMP\020\000\022\r\n" +
-      "\tHEARTBEAT\020\001\022\007\n\003MSG\020\002\022\t\n\005LOGIN\020\003\022\t\n\005LOGO" +
-      "N\020\004B\035\n\021cn.edu.cuit.protoB\010ProtoMsgb\006prot" +
-      "o3"
+      "\n\tMsg.proto\022\010protobuf\"\207\003\n\003Msg\022\020\n\010targetI" +
+      "P\030\001 \001(\t\022\020\n\010sendTime\030\002 \001(\t\022\022\n\ntargetName\030" +
+      "\003 \001(\t\022\037\n\004type\030\004 \001(\0162\021.protobuf.MsgType\022\017" +
+      "\n\007content\030\005 \001(\t\022\034\n\004file\030\006 \001(\0132\016.protobuf" +
+      ".File\022$\n\010userInfo\030\007 \001(\0132\022.protobuf.UserI" +
+      "nfo\022/\n\tuserInfos\030\010 \003(\0132\034.protobuf.Msg.Us" +
+      "erInfosEntry\022+\n\007friends\030\t \003(\0132\032.protobuf" +
+      ".Msg.FriendsEntry\032D\n\016UserInfosEntry\022\013\n\003k" +
+      "ey\030\001 \001(\t\022!\n\005value\030\002 \001(\0132\022.protobuf.UserI" +
+      "nfo:\0028\001\032.\n\014FriendsEntry\022\013\n\003key\030\001 \001(\005\022\r\n\005" +
+      "value\030\002 \001(\t:\0028\001\"0\n\004File\022\014\n\004Name\030\001 \001(\t\022\014\n" +
+      "\004Size\030\002 \001(\005\022\014\n\004Data\030\003 \001(\014\"T\n\010UserInfo\022\n\n" +
+      "\002Id\030\001 \001(\005\022\014\n\004Name\030\002 \001(\t\022\020\n\010Password\030\003 \001(" +
+      "\t\022\r\n\005Email\030\004 \001(\t\022\r\n\005Phone\030\005 \001(\t*L\n\007MsgTy" +
+      "pe\022\010\n\004TEMP\020\000\022\r\n\tHEARTBEAT\020\001\022\007\n\003MSG\020\002\022\t\n\005" +
+      "LOGIN\020\003\022\t\n\005LOGON\020\004\022\t\n\005USERS\020\005B\035\n\021cn.edu." +
+      "cuit.protoB\010ProtoMsgb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3651,12 +3946,18 @@ public final class ProtoMsg {
     internal_static_protobuf_Msg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protobuf_Msg_descriptor,
-        new java.lang.String[] { "TargetIP", "SendTime", "TargetId", "Type", "Content", "File", "UserInfo", "UserInfos", });
+        new java.lang.String[] { "TargetIP", "SendTime", "TargetName", "Type", "Content", "File", "UserInfo", "UserInfos", "Friends", });
     internal_static_protobuf_Msg_UserInfosEntry_descriptor =
       internal_static_protobuf_Msg_descriptor.getNestedTypes().get(0);
     internal_static_protobuf_Msg_UserInfosEntry_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protobuf_Msg_UserInfosEntry_descriptor,
+        new java.lang.String[] { "Key", "Value", });
+    internal_static_protobuf_Msg_FriendsEntry_descriptor =
+      internal_static_protobuf_Msg_descriptor.getNestedTypes().get(1);
+    internal_static_protobuf_Msg_FriendsEntry_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_protobuf_Msg_FriendsEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
     internal_static_protobuf_File_descriptor =
       getDescriptor().getMessageTypes().get(1);

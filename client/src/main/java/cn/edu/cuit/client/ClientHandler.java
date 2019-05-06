@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 import cn.edu.cuit.operation.ChatMsg;
 import cn.edu.cuit.operation.Login;
 import cn.edu.cuit.operation.Logon;
+import cn.edu.cuit.operation.Main;
 import cn.edu.cuit.proto.ProtoMsg.Msg;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.EventLoop;
@@ -53,7 +54,8 @@ public class ClientHandler extends SimpleChannelInboundHandler<Msg> {
     protected void messageReceived(ChannelHandlerContext channelHandlerContext, Msg msg) {
         switch (msg.getType()) {
             case MSG:
-                ChatMsg.setReceiveMsg(msg);
+                ChatMsg.list.add(msg);
+                //ChatMsg.setReceiveMsg(msg);
                 break;
             case HEARTBEAT:
                 break;
@@ -63,7 +65,12 @@ public class ClientHandler extends SimpleChannelInboundHandler<Msg> {
             case LOGON:
                 Logon.setReceiveLogonMsg(msg);
                 break;
+            case USERS:
+                Main.setUsers(msg);
+                break;
         }
-        System.out.println(msg);
+        System.err.println("--------------------------------------");
+        System.out.println("Receive:\n" + msg);
+        System.err.println("--------------------------------------");
     }
 }

@@ -8,12 +8,13 @@ option java_outer_classname = "ProtoMsg";
 message Msg {
     string targetIP = 1;
     string sendTime = 2;
-    string targetId = 3;
+    string targetName = 3;
     MsgType type = 4;
     string content = 5;
     File file = 6;
     UserInfo userInfo = 7;
     map<string, UserInfo> userInfos = 8;
+    map<int32, string> friends = 9;
 }
 
 message File{
@@ -36,4 +37,5 @@ enum MsgType {
     MSG = 2;
     LOGIN = 3;
     LOGON = 4;
+    USERS = 5;
 }
