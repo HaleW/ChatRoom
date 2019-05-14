@@ -1,7 +1,10 @@
 package cn.edu.cuit.operation;
 
+import cn.edu.cuit.proto.ProtoMsg;
+import cn.edu.cuit.proto.ProtoMsg.Msg;
+
 public class Add {
-    private static Msg users;
+    private static ProtoMsg.Msg users;
     private static Msg user;
 
     public static Msg getUsers() {

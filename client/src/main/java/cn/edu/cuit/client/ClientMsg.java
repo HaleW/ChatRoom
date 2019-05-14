@@ -1,12 +1,13 @@
 package cn.edu.cuit.client;
 
+import cn.edu.cuit.proto.ProtoMsg;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 
 import static cn.edu.cuit.client.Client.channelFuture;
 
 public class ClientMsg {
-    public void setMsg(Msg msg) {
+    public void setMsg(ProtoMsg.Msg msg) {
         if(channelFuture==null){
             return;
         }

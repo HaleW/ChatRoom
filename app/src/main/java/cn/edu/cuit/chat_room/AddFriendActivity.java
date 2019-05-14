@@ -13,6 +13,10 @@ import java.util.Map;
 
 import cn.edu.cuit.client.ClientMsg;
 import cn.edu.cuit.operation.Add;
+import cn.edu.cuit.proto.ProtoMsg;
+import cn.edu.cuit.proto.ProtoMsg.Msg;
+import cn.edu.cuit.proto.ProtoMsg.MsgType;
+import cn.edu.cuit.proto.ProtoMsg.UserInfo;
 import cn.edu.cuit.util.SPType;
 import cn.edu.cuit.util.SharedPreferenceUtil;
 
@@ -39,7 +43,7 @@ public class AddFriendActivity extends AppCompatActivity {
             String name = userList.get(position);
 
             ClientMsg clientMsg = new ClientMsg();
-            Msg.Builder m = Msg.newBuilder();
+            ProtoMsg.Msg.Builder m = Msg.newBuilder();
             UserInfo.Builder info = UserInfo.newBuilder();
             SharedPreferenceUtil spu = new SharedPreferenceUtil(this);
             UserInfo userInfo = info.setName(spu.getString(SPType.userName, "")).build();
