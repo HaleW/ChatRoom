@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package protobuf;
+
+option java_package = "cn.edu.cuit.proto";
+option java_outer_classname = "ProtoMsg";
+
+message Msg {
+    string targetIP = 1;
+    string sendTime = 2;
+    string targetName = 3;
+    MsgType type = 4;
+    string content = 5;
+    File file = 6;
+    UserInfo userInfo = 7;
+    map<string, UserInfo> userInfos = 8;
+    map<int32, string> friends = 9;
+}
+
+message File {
+    string Name = 1;
+    int32 Size = 2;
+    bytes Data = 3;
+}
+
+message UserInfo {
+    int32 Id = 1;
+    string Name = 2;
+    string Password = 3;
+    string Email = 4;
+    string Phone = 5;
+}
+
+enum MsgType {
+    TEMP = 0;
+    HEARTBEAT = 1;
+    MSG = 2;
+    LOGIN = 3;
+    LOGON = 4;
+    USERS = 5;
+    ADD = 6;
+    FRIENDS = 7;
+}
