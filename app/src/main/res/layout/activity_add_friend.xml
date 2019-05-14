@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:ignore="Orientation">
 
     <FrameLayout
@@ -19,24 +19,14 @@
             android:layout_marginVertical="30dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="好友列表"
+            android:text="添加好友"
             android:textColor="#fff"
-            android:textSize="24dp"/>
-
-        <Button
-            android:id="@+id/addFriend"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_gravity="right"
-            android:layout_marginVertical="25dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/ic_add_black_24dp" />
-
+            android:textSize="24dp" />
     </FrameLayout>
 
     <ListView
-        android:id="@+id/list_friend"
+        android:id="@+id/listUser"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </LinearLayout>

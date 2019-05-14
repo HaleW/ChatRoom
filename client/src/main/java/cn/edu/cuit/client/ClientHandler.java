@@ -2,11 +2,11 @@ package cn.edu.cuit.client;
 
 import java.util.concurrent.TimeUnit;
 
+import cn.edu.cuit.operation.Add;
 import cn.edu.cuit.operation.ChatMsg;
 import cn.edu.cuit.operation.Login;
 import cn.edu.cuit.operation.Logon;
 import cn.edu.cuit.operation.Main;
-import cn.edu.cuit.proto.ProtoMsg.Msg;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.EventLoop;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -26,7 +26,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Msg> {
         if (evt instanceof IdleStateEvent) {
             IdleStateEvent event = (IdleStateEvent) evt;
             if (IdleState.WRITER_IDLE.equals(event.state())) {
-                ctx.writeAndFlush(HeartBeat(ctx));
+                ctx.writeAndFlush(HeartBeat());
             } else {
                 ctx.channel().closeFuture().sync();
             }
@@ -55,7 +55,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Msg> {
         switch (msg.getType()) {
             case MSG:
                 ChatMsg.list.add(msg);
-                //ChatMsg.setReceiveMsg(msg);
+                ChatMsg.setReceiveMsg(msg);
                 break;
             case HEARTBEAT:
                 break;
@@ -65,12 +65,18 @@ public class ClientHandler extends SimpleChannelInboundHandler<Msg> {
             case LOGON:
                 Logon.setReceiveLogonMsg(msg);
                 break;
-            case USERS:
+            case FRIENDS:
                 Main.setUsers(msg);
                 break;
+            case USERS:
+                Add.setUsers(msg);
+                break;
+            case ADD:
+                Add.setUser(msg);
         }
-        System.err.println("--------------------------------------");
-        System.out.println("Receive:\n" + msg);
-        System.err.println("--------------------------------------");
+        System.out.println(
+                "--------------------------------------" +
+                        "\nReceive:\n" + msg +
+                        "\n--------------------------------------");
     }
 }

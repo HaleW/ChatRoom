@@ -2,7 +2,6 @@ package cn.edu.cuit.client;
 
 import java.util.concurrent.TimeUnit;
 
-import cn.edu.cuit.proto.ProtoMsg.Msg;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;

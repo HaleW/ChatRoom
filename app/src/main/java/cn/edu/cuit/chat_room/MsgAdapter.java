@@ -10,40 +10,12 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import cn.edu.cuit.proto.ProtoMsg;
-
 public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder> {
 
     private List<ProtoMsg.Msg> mMsglist;
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-
-        LinearLayout leftLayout;
-
-        LinearLayout rightLayout;
-
-        TextView leftMsg;
-
-        TextView rightMsg;
-
-        ViewHolder(View view) {
-            super(view);
-            leftLayout = view.findViewById(R.id.left_layout);
-            rightLayout = view.findViewById(R.id.right_layout);
-            leftMsg = view.findViewById(R.id.left_msg);
-            rightMsg = view.findViewById(R.id.right_msg);
-        }
-    }
-
     MsgAdapter(List<ProtoMsg.Msg> msgList) {
         mMsglist = msgList;
-    }
-
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.msg_item, parent, false);
-        return new ViewHolder(view);
     }
 
     @Override
@@ -55,11 +27,46 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder> {
             holder.rightLayout.setVisibility(View.VISIBLE);
             holder.leftLayout.setVisibility(View.GONE);
             holder.rightMsg.setText(msg.getContent());
+            holder.me.setText(msg.getUserInfo().getName());
         } else{
             // 如果是收到的消息，则显示左边的消息布局，将右边的消息布局隐藏
             holder.leftLayout.setVisibility(View.VISIBLE);
             holder.rightLayout.setVisibility(View.GONE);
             holder.leftMsg.setText(msg.getContent());
+            holder.friend.setText(msg.getUserInfo().getName());
+        }
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.msg_item, parent, false);
+        return new ViewHolder(view);
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+
+        LinearLayout leftLayout;
+
+        LinearLayout rightLayout;
+
+        TextView leftMsg;
+
+        TextView rightMsg;
+
+        private TextView friend;
+
+        private TextView me;
+
+        ViewHolder(View view) {
+            super(view);
+            leftLayout = view.findViewById(R.id.left_layout);
+            rightLayout = view.findViewById(R.id.right_layout);
+            leftMsg = view.findViewById(R.id.left_msg);
+            rightMsg = view.findViewById(R.id.right_msg);
+
+            friend = view.findViewById(R.id.friendName);
+            me = view.findViewById(R.id.myName);
         }
     }
 

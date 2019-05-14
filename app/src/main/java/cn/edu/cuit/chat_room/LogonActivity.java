@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import cn.edu.cuit.operation.Logon;
-import cn.edu.cuit.proto.ProtoMsg.Msg;
 
 import static cn.edu.cuit.operation.Logon.goToLogon;
 import static cn.edu.cuit.operation.Logon.isRightForPassword;

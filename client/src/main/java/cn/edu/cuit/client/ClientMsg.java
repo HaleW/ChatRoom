@@ -1,6 +1,5 @@
 package cn.edu.cuit.client;
 
-import cn.edu.cuit.proto.ProtoMsg.Msg;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 

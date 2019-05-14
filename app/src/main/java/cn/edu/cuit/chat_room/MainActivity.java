@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -16,9 +17,6 @@ import java.util.TimerTask;
 
 import cn.edu.cuit.client.ClientMsg;
 import cn.edu.cuit.operation.Main;
-import cn.edu.cuit.proto.ProtoMsg.Msg;
-import cn.edu.cuit.proto.ProtoMsg.MsgType;
-import cn.edu.cuit.proto.ProtoMsg.UserInfo;
 import cn.edu.cuit.util.SPType;
 import cn.edu.cuit.util.SharedPreferenceUtil;
 
@@ -27,6 +25,7 @@ import static cn.edu.cuit.tools.Tools.dateNow;
 public class MainActivity extends AppCompatActivity{
     private static List<String> friendList = new ArrayList<>();
     private ListView listView;
+    private Button addFriend;
     private boolean backPress = false;
     private Handler handler;
     UserAdapter adapter;
@@ -37,21 +36,34 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         adapter = new UserAdapter(MainActivity.this, R.layout.friend_item, friendList);
         listView = findViewById(R.id.list_friend);
+        addFriend = findViewById(R.id.addFriend);
         handler = new Handler();
         InitFriendList initFriendList = new InitFriendList();
         initFriendList.start();
+
+        addFriend.setOnClickListener(v -> {
+            Intent intent = new Intent(this, AddFriendActivity.class);
+            startActivity(intent);
+        });
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
             String name = friendList.get(position);
             Intent intent = new Intent(MainActivity.this, ChatRoomActivity.class);
             intent.putExtra("extra_name", name);
-            MainActivity.this.startActivity(intent);
+            startActivity(intent);
         });
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.hide();
         }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        InitFriendList initFriendList = new InitFriendList();
+        initFriendList.start();
     }
 
     @Override
@@ -63,7 +75,7 @@ public class MainActivity extends AppCompatActivity{
         UserInfo.Builder info = UserInfo.newBuilder();
         SharedPreferenceUtil spu = new SharedPreferenceUtil(this);
         UserInfo userInfo = info.setName(spu.getString(SPType.userName, "")).build();
-        Msg msg = m.setType(MsgType.USERS).setSendTime(dateNow()).setUserInfo(userInfo).build();
+        Msg msg = m.setType(MsgType.FRIENDS).setSendTime(dateNow()).setUserInfo(userInfo).build();
         clientMsg.setMsg(msg);
     }
 
@@ -91,15 +103,17 @@ public class MainActivity extends AppCompatActivity{
             while (true){
                 Msg msg=Main.getUsers();
                 if(msg!=null){
+                    friendList.clear();
                     for(Map.Entry<Integer,String> entry : msg.getFriendsMap().entrySet()){
                         friendList.add(entry.getValue());
                     }
+                    Main.setUsers(null);
                     break;
+                } else {
+                    friendList.clear();
                 }
             }
-            handler.post(() -> {
-                listView.setAdapter(adapter);
-            });
+            handler.post(() -> listView.setAdapter(adapter));
         }
     }
 }

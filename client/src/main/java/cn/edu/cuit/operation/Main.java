@@ -1,7 +1,5 @@
 package cn.edu.cuit.operation;
 
-import cn.edu.cuit.proto.ProtoMsg.Msg;
-
 public class Main {
     public static Msg getUsers() {
         return users;

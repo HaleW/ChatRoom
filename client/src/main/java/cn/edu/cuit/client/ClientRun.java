@@ -2,9 +2,8 @@ package cn.edu.cuit.client;
 
 import java.util.Scanner;
 
-import cn.edu.cuit.proto.ProtoMsg;
-
-import static cn.edu.cuit.tools.Tools.*;
+import static cn.edu.cuit.tools.Tools.IP;
+import static cn.edu.cuit.tools.Tools.Port;
 
 public class ClientRun {
     public static void Run() {

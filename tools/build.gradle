@@ -43,7 +43,7 @@ protobuf {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation group: 'io.netty', name: 'netty-all', version: '5.0.0.Alpha2'
-    implementation 'com.google.protobuf:protobuf-java:3.7.1'
+    implementation 'com.google.protobuf:protobuf-java:3.8.0-rc-1'
 }
 
 sourceCompatibility = "8"

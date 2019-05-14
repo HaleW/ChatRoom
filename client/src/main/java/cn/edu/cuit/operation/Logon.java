@@ -1,9 +1,6 @@
 package cn.edu.cuit.operation;
 
 import cn.edu.cuit.client.ClientMsg;
-import cn.edu.cuit.proto.ProtoMsg.Msg;
-import cn.edu.cuit.proto.ProtoMsg.MsgType;
-import cn.edu.cuit.proto.ProtoMsg.UserInfo;
 
 import static cn.edu.cuit.tools.Tools.dateNow;
 

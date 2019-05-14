@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import cn.edu.cuit.client.ClientRun;
 import cn.edu.cuit.operation.Login;
-import cn.edu.cuit.proto.ProtoMsg.Msg;
 import cn.edu.cuit.util.SPType;
 import cn.edu.cuit.util.SharedPreferenceUtil;
 import cn.edu.cuit.util.SharedPreferenceUtil.ContentValue;

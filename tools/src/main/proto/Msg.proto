@@ -38,4 +38,6 @@ enum MsgType {
     LOGIN = 3;
     LOGON = 4;
     USERS = 5;
+    ADD = 6;
+    FRIENDS = 7;
 }
