@@ -12,11 +12,11 @@ import static cn.edu.cuit.proto.ProtoMsg.MsgType;
 public class Tools {
     public static final int ReconnectTime = 5;
     public static final int Port = 9999;
-    public static final String IP = "47.106.235.197";
-    public static final String MysqlIP = "47.106.235.197";
+    public static final String IP = "127.0.0.1";
+    public static final String MysqlIP = "127.0.0.1";
     public static final String MysqlDatabaseName = "ChatRoom";
     public static final String MysqlUser = "root";
-    public static final String MysqlPassword = "Qq123456";
+    public static final String MysqlPassword = "psd";
 
     public static String dateNow() {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
